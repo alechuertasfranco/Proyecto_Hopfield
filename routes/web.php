@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CaracterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('plantilla');
 });
+
+Route::resource('caracter','CaracterController');
+Route::resource('coordenada','CoordenadaController');
+Route::resource('tipo','TipoController');
+
+
+Route::Get('/caracter', [CaracterController::class,'listCaracter']);
+Route::Get('/caracteres', [CaracterController::class,'listCaracteres']);
+Route::post('/crear', [CaracterController::class,'store']);
