@@ -1,91 +1,96 @@
-var canvas, context,clear;
-let vectorCanvas=[];
-let vectorCaracter=[];
-let vectorResultado=[];
-let matrizAux=[];
-let matrizTranspuesta=[];
+var canvas, context, clear;
+let vectorCanvas = [];
+let vectorCaracter = [];
+let matrizAux = [];
+let matrizTranspuesta = [];
 let agregar = [];
-var horizontal = 6,vertical = 7; // donde horizontal es la x y vertical la y
+var horizontal = 5,
+    vertical = 5; // donde horizontal es la x y vertical la y
 var gw = 300 / horizontal;
 var gh = 300 / vertical;
-var posicion = {x: 0, y: 0};
+var posicion = { x: 0, y: 0 };
 var repetido = true;
 var texto = "Aun no se busca ningún caracter";
 
 window.onload = function() {
-    canvas = document.getElementById('lienzo');
-    context = canvas.getContext('2d');
-    clear =document.getElementById('clear');
-    buscar =document.getElementById('buscar');
+    canvas = document.getElementById("lienzo");
+    context = canvas.getContext("2d");
+    clear = document.getElementById("clear");
+    buscar = document.getElementById("buscar");
+    txt_caracter = document.getElementById("txt_caracter");
 
-
-    clear.onclick=function(){
+    clear.onclick = function() {
         fillBackground();
-    }
+    };
 
-    buscar.onclick=function(){
+    buscar.onclick = function() {
         fetchCaracteres();
-    }
-    // Agregar
-    $('#caracter-form').submit(e => {
-        e.preventDefault();
-         let bool = BuscarCaracter($('#txt_caracter').val());
-         //console.log(bool)
-        if(bool){
-            const postData = {
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-            _token : $("meta[name='csrf-token']").attr("content"),
-            caracter: $('#txt_caracter').val(),
-            IdTipo: $('#cmb_tipo').val(),
-            vector: JSON.stringify(agregar)
-            };
-                $.post("http://127.0.0.1:8000/crear", postData, (response) => {
-                //console.log(response);
-                $('#caracter-form').trigger('reset');
-                fillBackground();
+    };
 
-                }).done(function(msg){console.log(msg)  })
+    // Agregar
+    $("#caracter-form").submit((e) => {
+        e.preventDefault();
+        let bool = BuscarCaracter($("#txt_caracter").val());
+        //console.log(bool)
+        if (bool) {
+            const postData = {
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                _token: $("meta[name='csrf-token']").attr("content"),
+                caracter: $("#txt_caracter").val(),
+                IdTipo: $("#cmb_tipo").val(),
+                vector: JSON.stringify(agregar),
+            };
+            $.post("http://127.0.0.1:8000/crear", postData, (response) => {
+                    //console.log(response);
+                    $("#caracter-form").trigger("reset");
+                    fillBackground();
+                })
+                .done(function(msg) {
+                    console.log(msg);
+                })
                 .fail(function(xhr, status, error) {
-                    console.log(xhr)
-                    console.log(status)
-                    console.log(error)
+                    console.log(xhr);
+                    console.log(status);
+                    console.log(error);
                     // error handling
                 });
-            alert('Caracter ingresado correctamente');
-        }
-        else
-        {
-            alert('Ese caracter ya ha sido ingresado');
+            alert("Caracter ingresado correctamente");
+        } else {
+            alert("Ese caracter ya ha sido ingresado");
             repetido = true;
         }
     });
 
     canvas.onmouseup = function(event) {
         var rect = canvas.getBoundingClientRect();
-        posicion.x = Math.floor((event.clientX-rect.left)/ gw);
+        posicion.x = Math.floor((event.clientX - rect.left) / gw);
         posicion.y = Math.floor((event.clientY - rect.top) / gh);
-        vectorCanvas[Number(posicion.y*horizontal)+Number(posicion.x)]=1;
+        vectorCanvas[Number(posicion.y * horizontal) + Number(posicion.x)] = 1;
         x = posicion.x;
         y = posicion.y;
-        agregar.push({x,y});
+        agregar.push({ x, y });
         //console.log(vectorCanvas);
         console.log(posicion);
         drawSquare(posicion.x, posicion.y, "blue");
-    }
+    };
 
     fillBackground();
     rellenarVector(vectorCanvas);
-}
+};
 
-function BuscarCaracter(BuscarCaracter){
+function BuscarCaracter(BuscarCaracter) {
     $.ajax({
-        url: "http://127.0.0.1:8000/caracter" ,
+        url: "http://127.0.0.1:8000/caracter",
         type: "GET",
         async: false,
         success: function(response) {
             response.forEach((c) => {
-                if(c.caracter == BuscarCaracter){
-                    repetido=false;
+                if (c.caracter == BuscarCaracter) {
+                    repetido = false;
                 }
             });
         },
@@ -95,112 +100,100 @@ function BuscarCaracter(BuscarCaracter){
 
 function fetchCaracteres() {
     $.ajax({
-        url: "http://127.0.0.1:8000/caracteres" ,
+        url: "http://127.0.0.1:8000/caracteres",
         type: "GET",
-        success: function(response) {
-            let caracter = "";
-            let caracterFinal="";
-            let cont=0;
-            let cont1=0;
-            let contResultadovsBase=0;
-            let datos=response.length;// 6 ---2 cordenadas del a y 2 coordenas b, 2 del c
-            llenarAuxiliar(matrizAux);
-            response.forEach((c) => {
-                cont1+=1;
-                if(cont1==datos){
-                        vectorCaracter[Number(c.ejey*horizontal)+Number(c.ejex)]=1;
-                        Transpuesta_Identidad(matrizTranspuesta,vectorCaracter);
-                        MatrizPesos(matrizTranspuesta,matrizAux);
-                }else{
+        success: function(caracteres) {
+            console.log("Caracteres");
+            console.log(caracteres);
+            let caracterFinal = "";
+            let encontrado = false;
+            let vector_entrante = [];
+            let vector_saliente = [];
 
-                    if(c.caracter!=caracter){
-                        caracter=c.caracter;// camnbia el caracter
-                       // console.log(caracter);
-                        if(cont!=0){
-                        Transpuesta_Identidad(matrizTranspuesta,vectorCaracter);
-                        MatrizPesos(matrizTranspuesta,matrizAux);
-                        cont=0;
-                        }
-                        matrizTranspuesta=[];
-                        vectorCaracter=[];
-                        rellenarVector(vectorCaracter);
-                        cont=1;
-                    }
+            matrizAux = llenarAuxiliar(matrizAux);
 
-                    vectorCaracter[Number(c.ejey*horizontal)+Number(c.ejex)]=1;
-                }
+            caracteres.forEach((caracter) => {
+                console.log(caracter);
+                matrizTranspuesta = [];
+                vectorCaracter = [];
+                rellenarVector(vectorCaracter);
 
-            });
-            //console.log('Matriz de Pesos');
-            convertirMatriz(matrizAux,vertical*horizontal,vertical*horizontal);
+                let coordenadas = caracter[2];
+                coordenadas.forEach((coordenada) => {
+                    vectorCaracter[
+                        Number(coordenada.ejey * horizontal) +
+                        Number(coordenada.ejex)
+                    ] = 1;
+                });
+                matrizTranspuesta = Transpuesta_Identidad(matrizTranspuesta, vectorCaracter);
+                MatrizPesos(matrizTranspuesta, matrizAux);
 
-                do {
-                //console.log('Vector Entrante')
-                //console.log(vectorCanvas);
-                VectorResultado_Escalonado(vectorCanvas,matrizAux);
-                //console.log('Vector Saliente')
-                //console.log(vectorResultado);
-                  } while (!CompararVectores(vectorCanvas,vectorResultado));
-                //console.log()
+                console.log("Matriz transpuesta");
+                convertirMatriz(matrizTranspuesta, vertical * horizontal, vertical * horizontal);
 
-                //Compara el resultado con los de la base
+                console.log("vectorCaracter");
+                console.log(vectorCaracter);
 
-            caracter = "";
-            cont=0 ;
-            cont1=0;
-
-            response.forEach((c) => {
-                cont1+=1;
-                if(cont1==datos){
-                        vectorCaracter[Number(c.ejey*horizontal)+Number(c.ejex)]=1;
-
-                        for (let x = 0; x < (vertical*horizontal); x++) {
-                            if(vectorCaracter[x]==vectorResultado[x])
-                            contResultadovsBase++;
-                        }
-                        if(contResultadovsBase==vertical*horizontal){
-                                caracterFinal=c.caracter;
-                            }
-                            contResultadovsBase=0;
-                }else{
-
-                    if(c.caracter!=caracter){
-
-                        if(cont!=0){
-                            for (let x = 0; x < (vertical*horizontal); x++) {
-                                if(vectorCaracter[x]==vectorResultado[x])
-                                contResultadovsBase++;
-                            }
-                            if(contResultadovsBase==vertical*horizontal){
-                                caracterFinal=caracter;
-                            }
-                            contResultadovsBase=0;
-                        cont=0;
-                        }
-                        caracter=c.caracter;
-                        vectorCaracter=[];
-                        rellenarVector(vectorCaracter);
-                        cont=1;
-                    }
-
-                    vectorCaracter[Number(c.ejey*horizontal)+Number(c.ejex)]=1;
-                }
-
+                console.log("Matriz de Pesos");
+                convertirMatriz(matrizAux, vertical * horizontal, vertical * horizontal);
             });
 
-            texto = "El caracter al que se parece es: "+caracterFinal;
+            console.log('Vector ingresado')
+            console.log(vectorCanvas)
+            vector_saliente = vectorCanvas;
+
+
+            while (!CompararVectores(vector_entrante, vector_saliente)) {
+                vector_entrante = vector_saliente
+                console.log("Vector Entrante:");
+                console.log(vector_entrante);
+                vector_saliente = VectorResultado(vector_entrante, matrizAux);
+                vector_saliente = Escalon(vector_saliente);
+                console.log("Vector Saliente:");
+                console.log(vector_saliente);
+                console.log("Estable:");
+                console.log(CompararVectores(vector_entrante, vector_saliente))
+            };
+
+            convertirMatriz(vector_saliente, vertical, horizontal);
+
+            //Compara el resultado con los de la base
+            caracteres.forEach((caracter) => {
+                if (!encontrado) {
+                    encontrado = true;
+                    caracterFinal = caracter[0]
+                    console.log(caracter);
+                    vectorCaracter = [];
+                    rellenarVector(vectorCaracter);
+
+                    let coordenadas = caracter[2];
+                    coordenadas.forEach((coordenada) => {
+                        vectorCaracter[Number(coordenada.ejey * horizontal) + Number(coordenada.ejex)] = 1;
+                    });
+
+                    convertirMatriz(vectorCaracter, vertical, horizontal);
+
+                    for (let i = 0; i < vertical * horizontal; i++) {
+                        if (vectorCaracter[i] != vector_saliente[i]) {
+                            encontrado = false;
+                        }
+                    }
+                }
+            });
+
+            texto = "Ingresaste el caracter: " + caracterFinal;
             console.log(texto);
+            txt_caracter.value = "Letra: " + caracterFinal;
             decir();
         },
     });
-
 }
-function decir(){
+
+function decir() {
     speechSynthesis.speak(new SpeechSynthesisUtterance(texto));
 }
 
 function drawSquare(x, y, color) {
-
     context.fillStyle = color;
     var rx = x * gw;
     var ry = y * gh;
@@ -208,106 +201,120 @@ function drawSquare(x, y, color) {
 }
 
 function fillBackground() {
-    context.fillStyle = '#FFFFFF';
+    context.fillStyle = "#FFFFFF";
     context.fillRect(0, 0, 300, 300);
     agregar = [];
+    vectorCanvas = [];
+    vectorCaracter = [];
+    matrizAux = [];
+    matrizTranspuesta = [];
+    repetido = true;
 }
 
 // rellena el vector del canvas en -1
-function rellenarVector(vectorX){
-    for (let index = 0; index < (vertical*horizontal); index++) {
-        vectorX[index]=-1;
+function rellenarVector(vectorX) {
+    for (let index = 0; index < vertical * horizontal; index++) {
+        vectorX[index] = -1;
     }
 }
 
 //Realizar la transpuesta y diagonales en 0
-function Transpuesta_Identidad(matrizTranspuesta, matrizX){
-    for (let x = 0; x < (vertical*horizontal); x++) {
-        for (let y = 0; y < (vertical*horizontal); y++) {
-            if(x==y)
-            matrizTranspuesta[Number(x*vertical*horizontal)+Number(y)]=0;
+function Transpuesta_Identidad(matrizTranspuesta, matrizX) {
+    for (let x = 0; x < vertical * horizontal; x++) {
+        for (let y = 0; y < vertical * horizontal; y++) {
+            if (x == y)
+                matrizTranspuesta[
+                    Number(x * vertical * horizontal) + Number(y)
+                ] = 0;
             else
-            matrizTranspuesta[Number(x*vertical*horizontal)+Number(y)]=Number(matrizX[x])*Number(matrizX[y]);
+                matrizTranspuesta[
+                    Number(x * vertical * horizontal) + Number(y)
+                ] = Number(matrizX[x]) * Number(matrizX[y]);
         }
     }
+
+    return matrizTranspuesta;
 }
 
-//copiar la matriz transpuesta con identidad en un auxiliar
-
-function CopyAuxiliar(matrizTranspuesta, matrizAux){
-    for (let x = 0; x < (vertical*horizontal); x++) {
-        for (let y = 0; y < (vertical*horizontal); y++) {
-            matrizAux[Number(x*vertical*horizontal)+Number(y)]= matrizTranspuesta[Number(x*vertical*horizontal)+Number(y)];
+//Copiar la matriz transpuesta con identidad en un auxiliar
+function CopyAuxiliar(matrizTranspuesta, matrizAux) {
+    for (let x = 0; x < vertical * horizontal; x++) {
+        for (let y = 0; y < vertical * horizontal; y++) {
+            matrizAux[Number(x * vertical * horizontal) + Number(y)] =
+                matrizTranspuesta[Number(x * vertical * horizontal) + Number(y)];
         }
     }
 }
 
 //obtener la matriz de pesos
-function MatrizPesos(matrizTranspuesta, matrizAux){
-    for (let x = 0; x < (vertical*horizontal); x++) {
-        for (let y = 0; y < (vertical*horizontal); y++) {
-            matrizAux[Number(x*vertical*horizontal)+Number(y)]=Number(matrizAux[Number(x*vertical*horizontal)+Number(y)])+Number(matrizTranspuesta[Number(x*vertical*horizontal)+Number(y)]);
+function MatrizPesos(matrizTranspuesta, matrizAux) {
+    for (let x = 0; x < vertical * horizontal; x++) {
+        for (let y = 0; y < vertical * horizontal; y++) {
+            matrizAux[Number(x * vertical * horizontal) + Number(y)] =
+                Number(matrizAux[Number(x * vertical * horizontal) + Number(y)]) +
+                Number(matrizTranspuesta[Number(x * vertical * horizontal) + Number(y)]);
         }
     }
 }
 
-
 //llenar auxiliar
-function llenarAuxiliar(matrizAux){
-    for (let x = 0; x < (vertical*horizontal); x++) {
-        for (let y = 0; y < (vertical*horizontal); y++) {
-            matrizAux[Number(x*vertical*horizontal)+Number(y)]=0;
-        }
+function llenarAuxiliar(_matriz) {
+    _tamaño = Math.pow(vertical * horizontal, 2);
+    console.log("Tamaño de la matriz auxiliar");
+    console.log(_tamaño);
+    for (let i = 0; i < _tamaño; i++) {
+        _matriz[i] = 0;
     }
+
+    return _matriz;
 }
 
 // convierte en matriz los vectores
-function convertirMatriz(matrizX,ver,hor){
-    matrizString="";
+function convertirMatriz(matrizX, ver, hor) {
+    matrizString = "";
     for (let x = 0; x < ver; x++) {
         for (let y = 0; y < hor; y++) {
-            if(matrizX[Number(x*hor)+Number(y)]>=0)
-                matrizString+='  '+matrizX[Number(x*hor)+Number(y)];
-                else
-                matrizString+=' '+matrizX[Number(x*hor)+Number(y)];
+            if (matrizX[Number(x * hor) + Number(y)] >= 0)
+                matrizString += "  " + matrizX[Number(x * hor) + Number(y)];
+            else
+                matrizString += " " + matrizX[Number(x * hor) + Number(y)];
         }
-        matrizString+="\n";
+        matrizString += "\n";
     }
-    //console.log(matrizString);
+    console.log(matrizString);
 }
 
 //Determinar salida de red
-
-function VectorResultado_Escalonado(vectorCanvas,MatrizPesos){
-    let suma=0;
-    for (let x = 0; x < vertical*horizontal; x++) {
-        for (let y = 0; y < vertical*horizontal; y++) {
-            suma+=vectorCanvas[y]*MatrizPesos[Number(x*vertical*horizontal)+Number(y)];
+function VectorResultado(vectorCanvas, MatrizPesos) {
+    let _resultado = [];
+    let suma = 0;
+    for (let x = 0; x < vertical * horizontal; x++) {
+        for (let y = 0; y < vertical * horizontal; y++) {
+            suma += vectorCanvas[y] * MatrizPesos[Number(x * vertical * horizontal) + Number(y)];
         }
-        vectorResultado[x]=suma;
-        suma=0;
+        _resultado[x] = suma;
+        suma = 0;
     }
-    for (let z= 0; z < vertical*horizontal; z++) {
-        if(vectorResultado[z]>0)
-            vectorResultado[z]=1;
-            else
-            vectorResultado[z]=-1
-    }
+
+    return _resultado
 }
-//Retorna un bool que determina si la entrada es igual que la salida
-function CompararVectores(vect1,vect2){
-    let cont=0;
-    for (let x= 0; x < vertical*horizontal; x ++) {
-        if(vect1[x]==vect2[x])
-           cont++;
-    }
-    if(cont==vertical*horizontal)
-    return true;
-    else{
-        for (let x= 0; x < vertical*horizontal; x ++) {
-            vect1[x]= vect2[x]
-        }
-        return false;
-    }
 
+function Escalon(_vector) {
+    for (let z = 0; z < vertical * horizontal; z++) {
+        if (_vector[z] > 0)
+            _vector[z] = 1;
+        else
+            _vector[z] = -1;
+    }
+    return _vector
+}
+
+//Retorna un bool que determina si la entrada es igual que la salida
+function CompararVectores(vect1, vect2) {
+    for (let i = 0; i < vect2.length; i++) {
+        if (vect1[i] != vect2[i]) {
+            return false;
+        }
+    }
+    return true;
 }

@@ -17,11 +17,11 @@ foreign key (idTipo) references Tipo(idTipo)
 );
 
 create TABLE Coordenada(
-idCoordernada int AUTO_INCREMENT,
+idCoordenada int AUTO_INCREMENT,
 ejex int,
 ejey int,
 idCaracter int,
-PRIMARY KEY (idCoordernada),
+PRIMARY KEY (idCoordenada),
 foreign key (idCaracter) references Caracter(idCaracter)
 );
 

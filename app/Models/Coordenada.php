@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Coordenada extends Model
 {
     protected $table='coordenada';
-    protected $primaryKey='idCoordernada';
+    protected $primaryKey='idCoordenada';
     protected $fillable=['ejex','ejey','idCaracter'];
     public $timestamps=false;
 

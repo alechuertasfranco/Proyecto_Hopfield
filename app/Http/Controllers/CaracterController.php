@@ -10,11 +10,7 @@ use DB;
 
 class CaracterController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
     }
@@ -22,38 +18,40 @@ class CaracterController extends Controller
     public function listCaracter(){
         return Caracter::get();
     }
+
     public function listCaracteres(){
-        $caracter = DB::table('caracter')
+        $caracteres = DB::table('caracter')
             ->join('coordenada', 'caracter.idCaracter', '=', 'coordenada.idCaracter')
-            ->select('caracter.caracter','coordenada.ejex','coordenada.ejey')
+            ->select('caracter.idCaracter', 'caracter.caracter', DB::raw('COUNT(coordenada.idCoordenada) as coordenadas'))
+            ->groupby('caracter.idCaracter', 'caracter.caracter')
             ->get();
+        $respuesta = array();
+        foreach ($caracteres as $caracter) {
+            $coordenadas = DB::table('caracter')
+                    ->join('coordenada', 'caracter.idCaracter', '=', 'coordenada.idCaracter')
+                    ->select('coordenada.ejex','coordenada.ejey')
+                    ->where('caracter.idCaracter', $caracter->idCaracter)
+                    ->get();
+            array_push(
+                $respuesta,
+                array(
+                    $caracter->caracter,
+                    $caracter->coordenadas,
+                    $coordenadas
+                )
+            );
+        }
 
-        Log::channel('stderr')->info($caracter);
+        // Log::channel('stderr')->info($respuesta);
 
-        return $caracter;
-        /* if($request->ajax()){
-            Genre::create($request->all());
-            return response()->json([
-                "mensaje" => "creado"
-            ]);
-        } */
+        return $respuesta;
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $caracter    = $request->caracter;
@@ -84,46 +82,21 @@ class CaracterController extends Controller
           return $vector;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //
