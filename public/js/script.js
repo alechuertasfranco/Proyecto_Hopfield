@@ -148,13 +148,17 @@ function fetchCaracteres() {
                 console.log("Vector Entrante:");
                 console.log(vector_entrante);
                 vector_saliente = VectorResultado(vector_entrante, matrizAux);
-                vector_saliente = Escalon(vector_saliente);
+                console.log("Vector Resultado:");
+                console.log(VectorResultado(vector_entrante, matrizAux))
+                vector_saliente = tangenteh(vector_saliente);
                 console.log("Vector Saliente:");
                 console.log(vector_saliente);
                 console.log("Estable:");
                 console.log(CompararVectores(vector_entrante, vector_saliente))
+                console.log('--------------------------------------------------')
             };
 
+            vector_saliente = Escalon(vector_saliente);
             convertirMatriz(vector_saliente, vertical, horizontal);
 
             //Compara el resultado con los de la base
@@ -180,6 +184,9 @@ function fetchCaracteres() {
                     }
                 }
             });
+            if (!encontrado) {
+                caracterFinal = "404 Not Found"
+            }
 
             texto = "Ingresaste el caracter: " + caracterFinal;
             console.log(texto);
@@ -299,6 +306,16 @@ function VectorResultado(vectorCanvas, MatrizPesos) {
     return _resultado
 }
 
+//Retorna un bool que determina si la entrada es igual que la salida
+function CompararVectores(vect1, vect2) {
+    for (let i = 0; i < vect2.length; i++) {
+        if (vect1[i] != vect2[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+
 function Escalon(_vector) {
     for (let z = 0; z < vertical * horizontal; z++) {
         if (_vector[z] > 0)
@@ -309,12 +326,37 @@ function Escalon(_vector) {
     return _vector
 }
 
-//Retorna un bool que determina si la entrada es igual que la salida
-function CompararVectores(vect1, vect2) {
-    for (let i = 0; i < vect2.length; i++) {
-        if (vect1[i] != vect2[i]) {
-            return false;
+function tangenteh(_vector) {
+    for (let i = 0; i < _vector.length; i++) {
+        _valor = _vector[i]
+        _vector[i] = Math.tanh(_valor)
+    }
+    return (_vector)
+}
+
+function relu(_vector) {
+    for (let i = 0; i < _vector.length; i++) {
+        _valor = _vector[i]
+        _vector[i] = Math.max(0, _valor)
+    }
+    return (_vector)
+}
+
+function sigmoide(_vector) {
+    for (let i = 0; i < _vector.length; i++) {
+        _valor = _vector[i]
+        _vector[i] = 1 / (1 + Math.exp(-_valor));
+    }
+    return (_vector)
+}
+
+function bipolar(_vector) {
+    for (let i = 0; i < _vector.length; i++) {
+        if (_vector[i] < 0.5) {
+            _vector[i] = -1
+        } else {
+            _vector[i] = 1
         }
     }
-    return true;
+    return _vector
 }
