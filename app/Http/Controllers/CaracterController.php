@@ -58,12 +58,13 @@ class CaracterController extends Controller
         $IdTipo      = $request->IdTipo;
         $vector = json_decode($_POST['vector']);
 
+        Log::Channel('stderr')->info($vector);
         $caracteres = Caracter::where('caracter','=',$caracter)->where('idTipo','=',$IdTipo)->get();
 
         if (count($caracteres)>0){
             return "Caracter ya registrado";
         }
-        else
+        else {
             $carac = new Caracter();
             $carac->caracter = $caracter;
             $carac->idTipo = $IdTipo;
@@ -80,6 +81,7 @@ class CaracterController extends Controller
                 $coor->save();
             }
           return $vector;
+        }
     }
 
     public function show($id)

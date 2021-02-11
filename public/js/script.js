@@ -19,6 +19,11 @@ window.onload = function() {
     buscar = document.getElementById("buscar");
     txt_caracter = document.getElementById("txt_caracter");
 
+    for (let i = 0; i < vertical * horizontal; i++) {
+        agregar[i] = 0
+    }
+    console.log(agregar)
+
     clear.onclick = function() {
         fillBackground();
     };
@@ -29,8 +34,13 @@ window.onload = function() {
 
     // Agregar
     $("#caracter-form").submit((e) => {
+        let agregar_filtrado = []
         e.preventDefault();
         let bool = BuscarCaracter($("#txt_caracter").val());
+        agregar.forEach(coordenada => {
+            agregar_filtrado.push(coordenada)
+        });
+
         //console.log(bool)
         if (bool) {
             const postData = {
@@ -42,7 +52,7 @@ window.onload = function() {
                 _token: $("meta[name='csrf-token']").attr("content"),
                 caracter: $("#txt_caracter").val(),
                 IdTipo: $("#cmb_tipo").val(),
-                vector: JSON.stringify(agregar),
+                vector: JSON.stringify(agregar_filtrado),
             };
             $.post("http://127.0.0.1:8000/crear", postData, (response) => {
                     //console.log(response);
@@ -73,9 +83,8 @@ window.onload = function() {
             vectorCanvas[Number(posicion.y * horizontal) + Number(posicion.x)] = 1;
             x = posicion.x;
             y = posicion.y;
-            agregar.push({ x, y });
+            agregar[y * vertical + x] = { x, y };
             //console.log(vectorCanvas);
-            console.log(posicion);
             drawSquare(posicion.x, posicion.y, "blue");
         }
     }
