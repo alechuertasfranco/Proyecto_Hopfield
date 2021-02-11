@@ -65,18 +65,25 @@ window.onload = function() {
         }
     });
 
-    canvas.onmouseup = function(event) {
-        var rect = canvas.getBoundingClientRect();
-        posicion.x = Math.floor((event.clientX - rect.left) / gw);
-        posicion.y = Math.floor((event.clientY - rect.top) / gh);
-        vectorCanvas[Number(posicion.y * horizontal) + Number(posicion.x)] = 1;
-        x = posicion.x;
-        y = posicion.y;
-        agregar.push({ x, y });
-        //console.log(vectorCanvas);
-        console.log(posicion);
-        drawSquare(posicion.x, posicion.y, "blue");
-    };
+    canvas.onmousedown = () => {
+        canvas.onmousemove = (event) => {
+            var rect = canvas.getBoundingClientRect();
+            posicion.x = Math.floor((event.clientX - rect.left) / gw);
+            posicion.y = Math.floor((event.clientY - rect.top) / gh);
+            vectorCanvas[Number(posicion.y * horizontal) + Number(posicion.x)] = 1;
+            x = posicion.x;
+            y = posicion.y;
+            agregar.push({ x, y });
+            //console.log(vectorCanvas);
+            console.log(posicion);
+            drawSquare(posicion.x, posicion.y, "blue");
+        }
+    }
+
+    canvas.onmouseup = () => {
+        canvas.onmousemove = () => null
+    }
+
 
     fillBackground();
     rellenarVector(vectorCanvas);
@@ -159,7 +166,10 @@ function fetchCaracteres() {
             };
 
             vector_saliente = Escalon(vector_saliente);
-            convertirMatriz(vector_saliente, vertical, horizontal);
+            console.log('Ingreso: ');
+            graficar(vectorCanvas, vertical, horizontal);
+            console.log('Resulto: ');
+            graficar(vector_saliente, vertical, horizontal);
 
             //Compara el resultado con los de la base
             caracteres.forEach((caracter) => {
@@ -175,7 +185,7 @@ function fetchCaracteres() {
                         vectorCaracter[Number(coordenada.ejey * horizontal) + Number(coordenada.ejex)] = 1;
                     });
 
-                    convertirMatriz(vectorCaracter, vertical, horizontal);
+                    graficar(vectorCaracter, vertical, horizontal);
 
                     for (let i = 0; i < vertical * horizontal; i++) {
                         if (vectorCaracter[i] != vector_saliente[i]) {
@@ -285,6 +295,21 @@ function convertirMatriz(matrizX, ver, hor) {
                 matrizString += "  " + matrizX[Number(x * hor) + Number(y)];
             else
                 matrizString += " " + matrizX[Number(x * hor) + Number(y)];
+        }
+        matrizString += "\n";
+    }
+    console.log(matrizString);
+}
+
+// convierte en matriz los vectores
+function graficar(matrizX, ver, hor) {
+    matrizString = "";
+    for (let x = 0; x < ver; x++) {
+        for (let y = 0; y < hor; y++) {
+            if (matrizX[Number(x * hor) + Number(y)] >= 0)
+                matrizString += " * ";
+            else
+                matrizString += "   ";
         }
         matrizString += "\n";
     }
