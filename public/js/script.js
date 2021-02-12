@@ -89,7 +89,7 @@ window.onload = function() {
         }
     }
 
-    canvas.onmouseup = () => {
+    this.onmouseup = () => {
         canvas.onmousemove = () => null
     }
 
@@ -166,7 +166,7 @@ function fetchCaracteres() {
                 vector_saliente = VectorResultado(vector_entrante, matrizAux);
                 console.log("Vector Resultado:");
                 console.log(VectorResultado(vector_entrante, matrizAux))
-                vector_saliente = tangenteh(vector_saliente);
+                vector_saliente = Escalon(vector_saliente);
                 console.log("Vector Saliente:");
                 console.log(vector_saliente);
                 console.log("Estable:");
@@ -174,7 +174,6 @@ function fetchCaracteres() {
                 console.log('--------------------------------------------------')
             };
 
-            vector_saliente = Escalon(vector_saliente);
             console.log('Ingreso: ');
             graficar(vectorCanvas, vertical, horizontal);
             console.log('Resulto: ');
