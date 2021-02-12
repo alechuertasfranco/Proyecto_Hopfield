@@ -3,6 +3,7 @@ let vectorCanvas = [];
 let vectorCaracter = [];
 let matrizAux = [];
 let matrizTranspuesta = [];
+let vector_saliente = [];
 let agregar = [];
 var horizontal = 5,
     vertical = 5; // donde horizontal es la x y vertical la y
@@ -124,7 +125,6 @@ function fetchCaracteres() {
             let caracterFinal = "";
             let encontrado = false;
             let vector_entrante = [];
-            let vector_saliente = [];
 
             matrizAux = llenarAuxiliar(matrizAux);
 
@@ -163,10 +163,10 @@ function fetchCaracteres() {
                 vector_entrante = vector_saliente
                 console.log("Vector Entrante:");
                 console.log(vector_entrante);
-                vector_saliente = VectorResultado(vector_entrante, matrizAux);
+                VectorResultado(vector_entrante, matrizAux);
                 console.log("Vector Resultado:");
-                console.log(VectorResultado(vector_entrante, matrizAux))
-                vector_saliente = Escalon(vector_saliente);
+                console.log(vector_saliente.toString())
+                Escalon(vector_saliente);
                 console.log("Vector Saliente:");
                 console.log(vector_saliente);
                 console.log("Estable:");
@@ -229,11 +229,6 @@ function fillBackground() {
     context.fillStyle = "#FFFFFF";
     context.fillRect(0, 0, 300, 300);
     agregar = [];
-    vectorCanvas = [];
-    vectorCaracter = [];
-    matrizAux = [];
-    matrizTranspuesta = [];
-    repetido = true;
 }
 
 // rellena el vector del canvas en -1
@@ -326,17 +321,14 @@ function graficar(matrizX, ver, hor) {
 
 //Determinar salida de red
 function VectorResultado(vectorCanvas, MatrizPesos) {
-    let _resultado = [];
     let suma = 0;
     for (let x = 0; x < vertical * horizontal; x++) {
         for (let y = 0; y < vertical * horizontal; y++) {
             suma += vectorCanvas[y] * MatrizPesos[Number(x * vertical * horizontal) + Number(y)];
         }
-        _resultado[x] = suma;
+        vector_saliente[x] = suma;
         suma = 0;
     }
-
-    return _resultado
 }
 
 //Retorna un bool que determina si la entrada es igual que la salida
@@ -349,14 +341,13 @@ function CompararVectores(vect1, vect2) {
     return true;
 }
 
-function Escalon(_vector) {
+function Escalon(vector_saliente) {
     for (let z = 0; z < vertical * horizontal; z++) {
-        if (_vector[z] > 0)
-            _vector[z] = 1;
+        if (vector_saliente[z] > 0)
+            vector_saliente[z] = 1;
         else
-            _vector[z] = -1;
+            vector_saliente[z] = -1;
     }
-    return _vector
 }
 
 function tangenteh(_vector) {
