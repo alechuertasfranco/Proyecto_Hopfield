@@ -47,6 +47,35 @@ class CaracterController extends Controller
         return $respuesta;
     }
 
+    public function caracteresTipo($tipo){
+        $caracteres = DB::table('caracter')
+            ->join('coordenada', 'caracter.idCaracter', '=', 'coordenada.idCaracter')
+            ->select('caracter.idCaracter', 'caracter.caracter', DB::raw('COUNT(coordenada.idCoordenada) as coordenadas'))
+            ->where('caracter.idTipo', $tipo)
+            ->groupby('caracter.idCaracter', 'caracter.caracter')
+            ->get();
+        $respuesta = array();
+        foreach ($caracteres as $caracter) {
+            $coordenadas = DB::table('caracter')
+                    ->join('coordenada', 'caracter.idCaracter', '=', 'coordenada.idCaracter')
+                    ->select('coordenada.ejex','coordenada.ejey')
+                    ->where('caracter.idCaracter', $caracter->idCaracter)
+                    ->get();
+            array_push(
+                $respuesta,
+                array(
+                    $caracter->caracter,
+                    $caracter->coordenadas,
+                    $coordenadas
+                )
+            );
+        }
+
+        // Log::channel('stderr')->info($respuesta);
+
+        return $respuesta;
+    }
+
     public function create()
     {
         //

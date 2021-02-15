@@ -25,4 +25,5 @@ Route::resource('tipo','TipoController');
 
 Route::Get('/caracter', [CaracterController::class,'listCaracter']);
 Route::Get('/caracteres', [CaracterController::class,'listCaracteres']);
+Route::Get('/caracteres/{tipo}', [CaracterController::class,'caracteresTipo']);
 Route::post('/crear', [CaracterController::class,'store']);

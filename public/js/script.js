@@ -1,11 +1,11 @@
 var canvas, context, clear;
 let vectorCanvas = [];
-let vectorAuxCanvas=[];
+let vectorAuxCanvas = [];
 let vectorCaracter = [];
 let matrizAux = [];
 let matrizTranspuesta = [];
 let vector_saliente = [];
-let vector_de_vectores_resultado=[];
+let vector_de_vectores_resultado = [];
 let agregar = [];
 var horizontal = 5,
     vertical = 5; // donde horizontal es la x y vertical la y
@@ -14,14 +14,14 @@ var gh = 300 / vertical;
 var posicion = { x: 0, y: 0 };
 var repetido = true;
 var texto = "Aun no se busca ningún caracter";
-vectorAuxCanvas=vectorCanvas;
+vectorAuxCanvas = vectorCanvas;
 window.onload = function() {
     canvas = document.getElementById("lienzo");
     context = canvas.getContext("2d");
     clear = document.getElementById("clear");
     buscar = document.getElementById("buscar");
     txt_caracter = document.getElementById("txt_caracter");
-   
+
 
     for (let i = 0; i < vertical * horizontal; i++) {
         agregar[i] = 0
@@ -30,11 +30,30 @@ window.onload = function() {
 
     clear.onclick = function() {
         fillBackground();
+        vectorCanvas = [];
+        vectorAuxCanvas = [];
+        vectorCaracter = [];
+        matrizAux = [];
+        matrizTranspuesta = [];
+        vector_saliente = [];
+        vector_de_vectores_resultado = [];
+        repetido = true;
+        texto = "Aun no se busca ningún caracter";
+        vectorAuxCanvas = vectorCanvas;
+        matrizAux = llenarAuxiliar(matrizAux);
+        rellenarVector(vectorCanvas);
     };
 
     buscar.onclick = function() {
         fetchCaracteres();
     };
+
+
+    cmb_tipo.onchange = () => {
+        btn_empezar.innerHTML = 'Empezar'
+        btn_empezar.setAttribute('onclick', 'empezar()')
+        caracteres_jugados = []
+    }
 
     // Agregar
     $("#caracter-form").submit((e) => {
@@ -118,8 +137,9 @@ function BuscarCaracter(BuscarCaracter) {
 }
 
 function fetchCaracteres() {
+    console.log(caracter_actual)
     $.ajax({
-        url: "http://127.0.0.1:8000/caracteres",
+        url: "http://127.0.0.1:8000/caracteres/" + modo.value,
         type: "GET",
         success: function(caracteres) {
             console.log("Caracteres");
@@ -127,130 +147,126 @@ function fetchCaracteres() {
             let caracterFinal = "";
             let encontrado = false;
             let vector_entrante = [];
-         
-            let cantidad_max_bucles=10;// cantidad de veces que se le permite que haga bucles sino que muera
-            let cont_bucles=0; // contador de bucles 
+
+            let cantidad_max_bucles = 10; // cantidad de veces que se le permite que haga bucles sino que muera
+            let cont_bucles = 0; // contador de bucles
             matrizAux = llenarAuxiliar(matrizAux);
-           
+
             console.log(vectorAuxCanvas);
-            console.log('la cantidad de caracteres en bae es '+caracteres.length);
+            console.log('la cantidad de caracteres en bae es ' + caracteres.length);
 
-            numero_capas=caracteres.length; // numero de capas totales 
-            numero_caracteres_entrada=caracteres.length; // numero de caracteres en base
-            capa_entrada=0;  // numero de capa de entrada
-            capa_salida=caracteres.length-1; // cual es el numero de la capa de salida
+            numero_capas = caracteres.length; // numero de capas totales
+            numero_caracteres_entrada = caracteres.length; // numero de caracteres en base
+            capa_entrada = 0; // numero de capa de entrada
+            capa_salida = caracteres.length - 1; // cual es el numero de la capa de salida
 
-            for (let capas = 0 ; capas<numero_capas; capas++) {
-               
-                if(capas==capa_entrada){
+            for (let capas = 0; capas < numero_capas; capas++) {
 
-                    for (let  x = 0;  x < numero_caracteres_entrada-1;  x++) {
-                             matrizAux=llenarAuxiliar(matrizAux);
-                            for (let vs = 0; vs < 2; vs++) {
-                                caracter=caracteres[x+vs];
-                                console.log('Caracter de capa entrada')
-                                console.log(caracter);
-                                
-                                matrizTranspuesta = [];
-                                vectorCaracter = [];
-                                rellenarVector(vectorCaracter);
-                            
-                                let coordenadas = caracter[2];
-                                coordenadas.forEach((coordenada) => {
-                                    vectorCaracter[
-                                        Number(coordenada.ejey * horizontal) +
-                                        Number(coordenada.ejex)
-                                    ] = 1;
-                                });
-                                matrizTranspuesta = Transpuesta_Identidad(matrizTranspuesta, vectorCaracter);
-                                MatrizPesos(matrizTranspuesta, matrizAux);
-                            }
+                if (capas == capa_entrada) {
 
-                            // logica para hacer la comparacion con el vector del canvas que ingrese
-                            vector_saliente=[];
-                            vectorCanvas=[];
+                    for (let x = 0; x < numero_caracteres_entrada - 1; x++) {
+                        matrizAux = llenarAuxiliar(matrizAux);
+                        for (let vs = 0; vs < 2; vs++) {
+                            caracter = caracteres[x + vs];
+                            console.log('Caracter de capa entrada')
+                            console.log(caracter);
 
-                            vectorCanvas =vectorAuxCanvas;
-                            vector_saliente = vectorCanvas;
-                            console.log('vector del canvas')
-                            console.log(vectorCanvas);
-                            graficar(vectorCanvas,vertical,horizontal);
-                            console.log('--------------------------------------------')
+                            matrizTranspuesta = [];
+                            vectorCaracter = [];
+                            rellenarVector(vectorCaracter);
+
+                            let coordenadas = caracter[2];
+                            coordenadas.forEach((coordenada) => {
+                                vectorCaracter[
+                                    Number(coordenada.ejey * horizontal) +
+                                    Number(coordenada.ejex)
+                                ] = 1;
+                            });
+                            matrizTranspuesta = Transpuesta_Identidad(matrizTranspuesta, vectorCaracter);
+                            MatrizPesos(matrizTranspuesta, matrizAux);
+                        }
+
+                        // logica para hacer la comparacion con el vector del canvas que ingrese
+                        vector_saliente = [];
+                        vectorCanvas = [];
+
+                        vectorCanvas = vectorAuxCanvas;
+                        vector_saliente = vectorCanvas;
+                        console.log('vector del canvas')
+                        console.log(vectorCanvas);
+                        graficar(vectorCanvas, vertical, horizontal);
+                        console.log('--------------------------------------------')
 
 
-                            while (!CompararVectores(vector_entrante, vector_saliente) && cont_bucles<cantidad_max_bucles ) {   
-                                vector_entrante = vector_saliente;
-                                VectorResultado(vector_entrante, matrizAux);
-                                Escalon(vector_saliente);
-                                console.log("Estable:");
-                                console.log(CompararVectores(vector_entrante, vector_saliente))
-                                console.log('--------------------------------------------------')
-                                cont_bucles++;                     
-                               
-                            };      
+                        while (!CompararVectores(vector_entrante, vector_saliente) && cont_bucles < cantidad_max_bucles) {
+                            vector_entrante = vector_saliente;
+                            VectorResultado(vector_entrante, matrizAux);
+                            Escalon(vector_saliente);
+                            console.log("Estable:");
+                            console.log(CompararVectores(vector_entrante, vector_saliente))
+                            console.log('--------------------------------------------------')
+                            cont_bucles++;
 
-                            console.log('Grafico del vector saliente')
-                            console.log(vector_saliente);
-                            graficar(vector_saliente,vertical,horizontal);
+                        };
 
-                            console.log(cont_bucles);
-                            if(cont_bucles==cantidad_max_bucles){
-                                console.log('entro en el bucle')
-                                vector_saliente=errorBucle();
-                            }
+                        console.log('Grafico del vector saliente')
+                        console.log(vector_saliente);
+                        graficar(vector_saliente, vertical, horizontal);
 
-                            vector_de_vectores_resultado[x]=vector_saliente;
-                            cont_bucles=0;
+                        console.log(cont_bucles);
+                        if (cont_bucles == cantidad_max_bucles) {
+                            console.log('entro en el bucle')
+                            vector_saliente = errorBucle();
+                        }
+
+                        vector_de_vectores_resultado[x] = vector_saliente;
+                        cont_bucles = 0;
 
                     }
-                }
-
-                else{
-                   
-                    
-                   for (let x = 0; x < vector_de_vectores_resultado.length-1; x++) {
-                    matrizAux=llenarAuxiliar(matrizAux);
+                } else {
+                    for (let x = 0; x < vector_de_vectores_resultado.length - 1; x++) {
+                        matrizAux = llenarAuxiliar(matrizAux);
                         for (let vs = 0; vs < 2; vs++) {
-                            nuevo_vector_caracter=vector_de_vectores_resultado[x+vs];
+                            nuevo_vector_caracter = vector_de_vectores_resultado[x + vs];
                             matrizTranspuesta = [];
                             matrizTranspuesta = Transpuesta_Identidad(matrizTranspuesta, nuevo_vector_caracter);
                             MatrizPesos(matrizTranspuesta, matrizAux);
-      
+
                         }
                         // logica para hacer la comparacion con el vector del canvas que ingrese
-                            vector_saliente=[];
-                            vectorCanvas=[];
+                        vector_saliente = [];
+                        vectorCanvas = [];
 
-                            vectorCanvas =vectorAuxCanvas;
-                            vector_saliente = vectorCanvas;
-                            console.log('vector del canvas')
-                            console.log(vectorCanvas);
-                            graficar(vectorCanvas,vertical,horizontal);
-                            console.log('--------------------------------------------')
+                        vectorCanvas = vectorAuxCanvas;
+                        vector_saliente = vectorCanvas;
+                        console.log('vector del canvas')
+                        console.log(vectorCanvas);
+                        graficar(vectorCanvas, vertical, horizontal);
+                        console.log('--------------------------------------------')
 
-                        while (!CompararVectores(vector_entrante, vector_saliente) && cont_bucles<cantidad_max_bucles ) {
-                            vectorCanvas=[];
-                            vectorCanvas =vectorAuxCanvas;
-                                vector_entrante = vector_saliente
-                                VectorResultado(vector_entrante, matrizAux);
-                                Escalon(vector_saliente);
-                                cont_bucles++;                     
+                        while (!CompararVectores(vector_entrante, vector_saliente) && cont_bucles < cantidad_max_bucles) {
+                            vectorCanvas = [];
+                            vectorCanvas = vectorAuxCanvas;
+                            vector_entrante = vector_saliente
+                            VectorResultado(vector_entrante, matrizAux);
+                            Escalon(vector_saliente);
+                            cont_bucles++;
                         };
 
-                        if(cont_bucles==cantidad_max_bucles){
-                            vector_saliente=errorBucle();
+                        if (cont_bucles == cantidad_max_bucles) {
+                            vector_saliente = errorBucle();
                         }
-                        cont_bucles=0;
-                        vector_de_vectores_resultado[x]=vector_saliente;
+                        cont_bucles = 0;
+                        vector_de_vectores_resultado[x] = vector_saliente;
                     }
-                        
+
                 }
 
             }
-            
+
             console.log('ingresaste el canvas asi')
-            graficar(vectorCanvas,vertical,horizontal);
-            vector_saliente =vector_de_vectores_resultado[0];
+            graficar(vectorCanvas, vertical, horizontal);
+            vector_saliente = vector_de_vectores_resultado[0];
             console.log('vector de vector resultado');
             console.log(vector_de_vectores_resultado);
             console.log('vector saliente');
@@ -280,12 +296,24 @@ function fetchCaracteres() {
                 }
             });
             if (!encontrado) {
-                caracterFinal = "404 Not Found"
+                caracterFinal = "invalido"
             }
 
             texto = "Ingresaste el caracter: " + caracterFinal;
             console.log(texto);
             txt_caracter.value = "Letra: " + caracterFinal;
+
+            if (caracterFinal == caracter_actual[0]) {
+                globos()
+                console.log('Felicitaciones')
+                hablar('Felicitaciones')
+                empezar()
+                caracteres_jugados.push(caracter_actual[0])
+            } else {
+                emojis()
+                console.log('Que pena')
+                hablar('Que pena')
+            }
             decir();
         },
     });
@@ -399,7 +427,7 @@ function graficar(matrizX, ver, hor) {
 
 //Determinar salida de red
 function VectorResultado(vector, MatrizPesos) {
-    var vectorAS=[];
+    var vectorAS = [];
     let suma = 0;
     for (let x = 0; x < vertical * horizontal; x++) {
         for (let y = 0; y < vertical * horizontal; y++) {
@@ -408,9 +436,9 @@ function VectorResultado(vector, MatrizPesos) {
         vectorAS[x] = suma;
         suma = 0;
     }
-  
-    vector_saliente=vectorAS;
-   
+
+    vector_saliente = vectorAS;
+
 }
 
 //Retorna un bool que determina si la entrada es igual que la salida
@@ -468,11 +496,11 @@ function bipolar(_vector) {
 }
 
 //LLenamos el vector resultado con 0 si entro a bucle
-function errorBucle(){
+function errorBucle() {
     _tamaño = vertical * horizontal
-    let vectorError=[];
+    let vectorError = [];
     for (let i = 0; i < _tamaño; i++) {
-       vectorError[i] = 0;
+        vectorError[i] = 0;
     }
     return vectorError;
 }
