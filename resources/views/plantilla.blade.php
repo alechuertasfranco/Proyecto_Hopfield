@@ -12,7 +12,7 @@
     <meta name="robots" content="noindex,nofollow">
     <title>Aprende Jugando</title>
     <link rel="canonical" href="https://www.wrappixel.com/templates/myadmin-lite/" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/img/Icon.png">
+    <link rel="shortcut icon" href="img/loguito1.png">
     <link href="https://wrappixel.com/demos/free-admin-templates/all-lite-landing-pages/dist/css/style.css"
         rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
@@ -23,6 +23,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/svg-with-js.min.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/v4-shims.min.css" />
     <link rel="stylesheet" href="/css/balloons.css" />
+    
     <style type="css">
         .container{
                 display: static
@@ -32,13 +33,13 @@
 
 <body>
     <div id="main-wrapper">
-        <header class="py-3 bg-white">
+        <header class="py-3 bg-ligth">
             <div class="container">
                 <!-- Header -->
                 <div class="header">
                     <nav class="navbar navbar-expand-md navbar-light px-0">
                         <a class="navbar-brand" href="#">
-                            <img src="https://unitru.edu.pe/Recursos/img-unt/logo-unt1.png" style="" width="17%"
+                            <img src="img/logo1.png" style="" width="20%"
                                 alt="logo">
                         </a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -49,14 +50,14 @@
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav ml-auto">
                                 <li class="nav-item pr-3">
-                                    <button onclick="toInicio()" class="btn btn-custom btn-outline-info btn-md"
+                                    <button onclick="toInicio()" class="btn btn-custom btn-info btn-md"
                                         style="border-radius: 5px;">Inicio</button>
                                 </li>
                                 <li class="nav-item pr-3">
                                     <button onclick="toObjetivo()" class="btn btn-custom btn-outline-info btn-md"
                                         style="border-radius: 5px;">Objetivo</button>
                                 <li class="nav-item">
-                                    <button onclick="toJuego()" class="btn btn-custom btn-info btn-md"
+                                    <button onclick="toJuego()" class="btn btn-custom btn-outline-info btn-md"
                                         style="border-radius: 5px;">A JUGAR</button>
                                 </li>
                             </ul>
@@ -67,17 +68,15 @@
             </div>
         </header>
         <!-- Contenido -->
-        <div class="content-wrapper"
-            style="background-image: url(img/2.jpg); background-repeat:no-repeat; background-size:cover;">
-            <section class="spacer bg-light"
-                style="background-image: url(img/2.jpg); background-repeat:no-repeat; background-size:cover;">
+        <div class="content-wrapper" style="background-color: white;">
+            <section style="background-color: white;">
                 <div class="container">
                     {{-- TITULO --}}
                     <div class="row justify-content-md-center pt-2">
                         <div class="col-md-9 text-center">
-                            <h1 class="text-dark">APRENDE <span class="font-weight-bold">JUGANDO</span> <span
+                            <h1 class="text-dark" style="padding-top: 20px;">APRENDE JUGANDO <span
                                     class="border-bottom border-dark"> </span></h1>
-                            <h3 class="text-info">Identificación de caracteres para el aprendizaje preescolar</h3>
+                            <h3 tyle="color: gray;">Identificación de caracteres para el aprendizaje preescolar</h3>
                         </div>
                     </div>
                     <div class="row py-5">
@@ -97,33 +96,33 @@
                                                 data-ride="carousel">
                                                 <ol class="carousel-indicators">
                                                     <li data-target="#carouselExampleIndicators" data-slide-to="0"
-                                                        class="active"></li>
-                                                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                                                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                                                    <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
-                                                    <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+                                                        class="active" hidden></li>
+                                                    <li data-target="#carouselExampleIndicators" data-slide-to="1" hidden></li>
+                                                    <li data-target="#carouselExampleIndicators" data-slide-to="2" hidden></li>
+                                                    <li data-target="#carouselExampleIndicators" data-slide-to="3" hidden></li>
+                                                    <li data-target="#carouselExampleIndicators" data-slide-to="4" hidden></li>
                                                 </ol>
                                                 <div class="carousel-inner" aling="center">
                                                     <div class="carousel-item active">
-                                                        <img class="d-block w-100 h-50" src="img/4.jpg"
+                                                        <img class="d-block w-100 h-50" src="img/4.png"
                                                             alt="First slide" style="height: 50px;">
                                                     </div>
                                                     <div class="carousel-item">
-                                                        <img class="d-block w-100 h-50" src="img/5.jpg"
+                                                        <img class="d-block w-100 h-50" src="img/5.png"
                                                             alt="Second slide" style="height: 50px;">
                                                     </div>
                                                     <div class="carousel-item">
-                                                        <img class="d-block w-100 h-50" src="img/6.jpg"
+                                                        <img class="d-block w-100 h-50" src="img/6.png"
                                                             alt="Third slide" style="height: 50px;">
                                                     </div>
                                                 </div>
                                                 <a class="carousel-control-prev" href="#carouselExampleIndicators"
-                                                    role="button" data-slide="prev">
+                                                    role="button" data-slide="prev" hidden>
                                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                                     <span class="sr-only">Previous</span>
                                                 </a>
                                                 <a class="carousel-control-next" href="#carouselExampleIndicators"
-                                                    role="button" data-slide="next">
+                                                    role="button" data-slide="next" hidden>
                                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                                     <span class="sr-only">Next</span>
                                                 </a>
@@ -301,20 +300,16 @@
                     </div>
                 </div>
         </div>
+        <footer style="background-color: white;">
+            <img src="img/footer1.png" alt="" class="img-fluid" width="110%" height="155px" >
+    
+        </footer>
         </section>
     </div>
     <!-- ============================================================== -->
     <!-- PIE DE PAGINA -->
     <!-- ============================================================== -->
-    <footer id="nosotros" class="text-center p-4" style="background-color: peru;">
-        <p style="color: black;"> Derechos reservador por el Autor. Diseñado y Desarrollado por Grupo 4. </p>
-        <p style="font-size: 12px; color: black;"> - Huertas Franco Alec <br>
-            - Paulino Vigo Arturo <br>
-            - Roncal Sánchez Geraldine <br>
-            - Salvador Llaro Ericka <br>
-            - Zavaleta Taucett Jhanpoul </p>
-
-    </footer>
+    
     </div>
 
     <!-- Modal -->
