@@ -23,7 +23,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/svg-with-js.min.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/v4-shims.min.css" />
     <link rel="stylesheet" href="/css/balloons.css" />
-    
+
     <style type="css">
         .container{
                 display: static
@@ -56,9 +56,17 @@
                                 <li class="nav-item pr-3">
                                     <button onclick="toObjetivo()" class="btn btn-custom btn-outline-info btn-md"
                                         style="border-radius: 5px;">Objetivo</button>
-                                <li class="nav-item">
+                                <li class="nav-item pr-3">
                                     <button onclick="toJuego()" class="btn btn-custom btn-outline-info btn-md"
-                                        style="border-radius: 5px;">A JUGAR</button>
+                                        style="border-radius: 5px;">A jugar</button>
+                                </li>
+                                <li class="nav-item">
+                                    <button onclick="event.preventDefault();
+                                    document.getElementById('logout-form').submit();" class="btn btn-custom btn-outline-info btn-md"
+                                        style="border-radius: 5px;">Salir</button>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
                                 </li>
                             </ul>
                         </div>
@@ -302,14 +310,14 @@
         </div>
         <footer style="background-color: white;">
             <img src="img/footer1.png" alt="" class="img-fluid" width="110%" height="155px" >
-    
+
         </footer>
         </section>
     </div>
     <!-- ============================================================== -->
     <!-- PIE DE PAGINA -->
     <!-- ============================================================== -->
-    
+
     </div>
 
     <!-- Modal -->

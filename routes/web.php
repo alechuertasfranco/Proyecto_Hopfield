@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CaracterController;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,17 +15,19 @@ use App\Http\Controllers\CaracterController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Auth::routes();
 
-Route::get('/', function () {
-    return view('plantilla');
-});
+Route::get('/',[HomeController::class,'index']);
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/plantilla', function () {return view('plantilla');});
 
 Route::resource('caracter','CaracterController');
 Route::resource('coordenada','CoordenadaController');
 Route::resource('tipo','TipoController');
 
-
 Route::Get('/caracter', [CaracterController::class,'listCaracter']);
 Route::Get('/caracteres', [CaracterController::class,'listCaracteres']);
 Route::Get('/caracteres/{tipo}', [CaracterController::class,'caracteresTipo']);
 Route::post('/crear', [CaracterController::class,'store']);
+
+

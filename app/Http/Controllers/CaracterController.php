@@ -10,11 +10,6 @@ use DB;
 
 class CaracterController extends Controller
 {
-
-    public function index()
-    {
-    }
-
     public function listCaracter(){
         return Caracter::get();
     }
@@ -76,11 +71,6 @@ class CaracterController extends Controller
         return $respuesta;
     }
 
-    public function create()
-    {
-        //
-    }
-
     public function store(Request $request)
     {
         $caracter    = $request->caracter;
@@ -111,25 +101,5 @@ class CaracterController extends Controller
             }
           return $vector;
         }
-    }
-
-    public function show($id)
-    {
-        //
-    }
-
-    public function edit($id)
-    {
-        //
-    }
-
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    public function destroy($id)
-    {
-        //
     }
 }
