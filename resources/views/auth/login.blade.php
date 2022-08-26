@@ -259,15 +259,24 @@
     background: #ebffff !important;
     color: #ebffff !important;
     }
+
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        color: white;
+        text-align: center;
+    }
 </style>
 @section('content')
 <div class="form1">
-    <img src="img/grande.png" alt="" class="img-fluid" width="100%" height="450px">
+    <img src="img/grande.png" alt="" class="img-fluid" width="100%">
 </div>
 <div class="form">
     <div class="form-panel one">
       <div class="form-header" >
-        <img src="img/logo.png" alt="" class="img-fluid" width="80%" height="90px" >
+        <img src="img/logo.png" alt="" class="img-fluid" width="80%" >
       </div>
       <div class="form-content">
         <form method="POST" action="{{route('login')}}">
@@ -282,7 +291,7 @@
             {{-- <label class="form-remember">
               <input type="checkbox"/>Recuérdame
             </label><a class="form-recovery" href="#" style="color:gray;">¿Olvidó su contraseña?</a> --}}
-            <a href="/register" style="color:gray;text-decoration: none">Registrarse</a>
+            <a href="/register" style="color:gray;text-decoration: none">Aún no tienes cuenta?, registrate aquí</a>
           </div>
           <div class="form-group">
             <button type="submit">Ingresar</button>
@@ -291,7 +300,7 @@
       </div>
     </div>
 </div>
-<footer>
-    <img src="img/footer.png" alt="" class="img-fluid" width="100%" height="180px" >
-</footer>
+<div class="footer">
+    <img src="img/footer.png" alt="" width="100%">
+</div>
 @endsection

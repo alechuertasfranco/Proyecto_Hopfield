@@ -1,10 +1,8 @@
 @extends('layouts.app')
-<style>
-    html {
+<style>    html {
     width: 100%;
     height: 100%;
     }
-
     body {
     background: #ebffff;
     color: rgba(0, 0, 0, 0.6);
@@ -261,15 +259,23 @@
     background: #ebffff !important;
     color: #ebffff !important;
     }
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        color: white;
+        text-align: center;
+    }
 </style>
 @section('content')
 <div class="form1">
-    <img src="img/grande.png" alt="" class="img-fluid" width="95%" height="440px">
+    <img src="img/grande.png" alt="" class="img-fluid" width="95%">
 </div>
 <div class="form">
     <div class="form-panel one">
       <div class="form-header" >
-        <img src="img/logo.png" alt="" class="img-fluid" width="60%" height="85px" >
+        <img src="img/logo.png" alt="" class="img-fluid" width="60%">
       </div>
        <div class="form-content">
             <form method="POST" action="{{ route('register') }}">
@@ -286,7 +292,7 @@
                 <div class="form-group">
                     <input id="password-confirm" type="password" name="password_confirmation" required="required" placeholder="Confirmar contraseña"/>
                 </div>
-                <a href="/login" style="color:gray;text-decoration: none">Iniciar sesión</a>
+                <a href="/login" style="color:gray;text-decoration: none">Ya tienes cuenta?, inicia sesión</a>
                 <div class="form-group" style="padding-left: 25%;">
                     <button type="submit" >{{ __('Register') }}</button>
                 </div>
@@ -294,9 +300,9 @@
       </div>
     </div>
   </div>
-  <footer>
-    <img src="img/footer.png" alt="" class="img-fluid" width="100%" height="125px" >
-</footer>
+  <div class="footer">
+    <img src="img/footer.png" alt="" class="img-fluid" width="100%">
+</div>
 {{-- <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
