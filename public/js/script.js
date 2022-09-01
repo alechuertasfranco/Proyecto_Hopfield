@@ -315,7 +315,7 @@ function fetchCaracteres() {
                     background: '#fff url(./img/fondo_colorido.jpg)',
                     backdrop: `
                       rgba(0,0,123,0.4)
-                      url("./img/pocoyo.gif")
+                      url("./img/niños.gif")
                       center
                       repeat
                     `
