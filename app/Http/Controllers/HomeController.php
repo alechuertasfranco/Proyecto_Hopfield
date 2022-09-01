@@ -38,6 +38,7 @@ class HomeController extends Controller
         $us=User::findOrFail($id);
         event(new Registered($us));
         $user=User::all();
-        return view("user.index",compact('user'));
+        session()->put('email_send','El email ha sido enviado!');
+        return view("user.index",compact('user'))->with('email_send','El email ha sido enviado!');
     }
 }

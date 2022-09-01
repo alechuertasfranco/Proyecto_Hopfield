@@ -47,3 +47,24 @@
                 </tbody>
               </table>
 @endsection
+@section("scripts")
+@if(Session::has('email_send'))
+    <script>
+        const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-right',
+        customClass: {
+            popup: 'colored-toast'
+        },
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true
+        })
+        Toast.fire({
+        icon: 'success',
+        title: "{!! Session::get('email_send') !!}"
+    })
+    </script>
+@endif
+@endsection
+
