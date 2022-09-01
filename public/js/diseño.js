@@ -34,19 +34,6 @@ function empezar() {
                 } while (caracteres_jugados.includes(item[0]));
                 hablar('Dibuja ' + modo_txt + item[0])
                 console.log('Dibuja ' + modo_txt + item[0])
-                Swal.fire({
-                    title: 'Dibuja ' + modo_txt + item[0],
-                    width: 600,
-                    padding: '3em',
-                    color: '#716add',
-                    background: '#fff url(./img/fondo_colorido.jpg)',
-                    backdrop: `
-                      rgba(0,0,123,0.4)
-                      url("./img/nyan-cat.gif")
-                      left top
-                      no-repeat
-                    `
-                  })
                 btn_empezar.innerHTML = 'Repetir <i class="fa fa-volume-up ml-1"></i>'
                 btn_empezar.setAttribute('onclick', 'repetir("' + item[0] + '")')
                 caracter_actual = item
@@ -66,19 +53,6 @@ function empezar() {
 
 function repetir(_item) {
     hablar('Dibuja ' + modo_txt + ' ' + _item)
-    Swal.fire({
-        title: 'Dibuja ' + modo_txt + _item,
-        width: 600,
-        padding: '3em',
-        color: '#716add',
-        background: '#fff url(./img/fondo_colorido.jpg)',
-        backdrop: `
-          rgba(0,0,123,0.4)
-          url("./img/nyan-cat.gif")
-          left top
-          no-repeat
-        `
-      })
 }
 
 
