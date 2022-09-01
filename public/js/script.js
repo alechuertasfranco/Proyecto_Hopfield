@@ -152,8 +152,8 @@ function fetchCaracteres() {
             let cont_bucles = 0; // contador de bucles
             matrizAux = llenarAuxiliar(matrizAux);
 
-            console.log(vectorAuxCanvas);
-            console.log('la cantidad de caracteres en bae es ' + caracteres.length);
+            //console.log(vectorAuxCanvas);
+            //console.log('la cantidad de caracteres en bae es ' + caracteres.length);
 
             numero_capas = caracteres.length; // numero de capas totales
             numero_caracteres_entrada = caracteres.length; // numero de caracteres en base
@@ -168,8 +168,8 @@ function fetchCaracteres() {
                         matrizAux = llenarAuxiliar(matrizAux);
                         for (let vs = 0; vs < 2; vs++) {
                             caracter = caracteres[x + vs];
-                            console.log('Caracter de capa entrada')
-                            console.log(caracter);
+                            //console.log('Caracter de capa entrada')
+                            //console.log(caracter);
 
                             matrizTranspuesta = [];
                             vectorCaracter = [];
@@ -192,25 +192,25 @@ function fetchCaracteres() {
 
                         vectorCanvas = vectorAuxCanvas;
                         vector_saliente = vectorCanvas;
-                        console.log('vector del canvas')
-                        console.log(vectorCanvas);
+                       // console.log('vector del canvas')
+                       // console.log(vectorCanvas);
                         graficar(vectorCanvas, vertical, horizontal);
-                        console.log('--------------------------------------------')
+                       // console.log('--------------------------------------------')
 
 
                         while (!CompararVectores(vector_entrante, vector_saliente) && cont_bucles < cantidad_max_bucles) {
                             vector_entrante = vector_saliente;
                             VectorResultado(vector_entrante, matrizAux);
                             Escalon(vector_saliente);
-                            console.log("Estable:");
-                            console.log(CompararVectores(vector_entrante, vector_saliente))
-                            console.log('--------------------------------------------------')
+                           // console.log("Estable:");
+                           // console.log(CompararVectores(vector_entrante, vector_saliente))
+                           // console.log('--------------------------------------------------')
                             cont_bucles++;
 
                         };
 
-                        console.log('Grafico del vector saliente')
-                        console.log(vector_saliente);
+                       // console.log('Grafico del vector saliente')
+                       // console.log(vector_saliente);
                         graficar(vector_saliente, vertical, horizontal);
 
                         console.log(cont_bucles);
@@ -239,10 +239,10 @@ function fetchCaracteres() {
 
                         vectorCanvas = vectorAuxCanvas;
                         vector_saliente = vectorCanvas;
-                        console.log('vector del canvas')
-                        console.log(vectorCanvas);
+                        //console.log('vector del canvas')
+                        //console.log(vectorCanvas);
                         graficar(vectorCanvas, vertical, horizontal);
-                        console.log('--------------------------------------------')
+                        //console.log('--------------------------------------------')
 
                         while (!CompararVectores(vector_entrante, vector_saliente) && cont_bucles < cantidad_max_bucles) {
                             vectorCanvas = [];
@@ -264,13 +264,13 @@ function fetchCaracteres() {
 
             }
 
-            console.log('ingresaste el canvas asi')
+            //console.log('ingresaste el canvas asi')
             graficar(vectorCanvas, vertical, horizontal);
             vector_saliente = vector_de_vectores_resultado[0];
-            console.log('vector de vector resultado');
-            console.log(vector_de_vectores_resultado);
-            console.log('vector saliente');
-            console.log(vector_saliente);
+            //console.log('vector de vector resultado');
+            //console.log(vector_de_vectores_resultado);
+            //console.log('vector saliente');
+            //console.log(vector_saliente);
 
             //Compara el resultado con los de la base
             caracteres.forEach((caracter) => {
@@ -300,18 +300,43 @@ function fetchCaracteres() {
             }
 
             texto = "Ingresaste el caracter: " + caracterFinal;
-            console.log(texto);
+            // console.log(texto);
             txt_caracter.value = "Letra: " + caracterFinal;
 
             if (caracterFinal == caracter_actual[0]) {
                 globos()
-                console.log('Felicitaciones')
+                //console.log('Felicitaciones')
                 hablar('Felicitaciones')
-                empezar()
-                caracteres_jugados.push(caracter_actual[0])
+                Swal.fire({
+                    title: texto,
+                    width: 600,
+                    padding: '3em',
+                    color: '#716add',
+                    background: '#fff url(./img/fondo_colorido.jpg)',
+                    backdrop: `
+                      rgba(0,0,123,0.4)
+                      url("./img/pocoyo.gif")
+                      center
+                      repeat
+                    `
+                  }).then((result) => {
+                    empezar()
+                    caracteres_jugados.push(caracter_actual[0])
+                  })
             } else {
-                emojis()
-                console.log('Que pena')
+                Swal.fire({
+                    title: texto,
+                    width: 600,
+                    padding: '3em',
+                    color: '#716add',
+                    background: '#fff url(./img/fondo_colorido.jpg)',
+                    backdrop: `
+                      rgba(0,0,123,0.4)
+                      url("./img/llorar.gif")
+                      center
+                      repeat
+                    `
+                  })
                 hablar('Que pena')
             }
             decir();

@@ -359,6 +359,7 @@
 <script src="/js/script.js"></script>
 <script src="/js/diseño.js"></script>
 <script src="/js/balloons.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script
     src="https://wrappixel.com/demos/free-admin-templates/all-lite-landing-pages/assets/plugins/jquery/dist/jquery.min.js">
 </script>
