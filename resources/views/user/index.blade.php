@@ -37,7 +37,7 @@
                     @endif
                     <td>
                         @if ($itemuser->email !== 'admin@admin.com')
-                            <button class="btn btn-primary mr-1">Activar</button>
+                            <a href="{{route('registrarUser',$itemuser->id)}}" class="btn btn-primary">Activar</a>
                         @endif
                     </td>
                   </tr>
