@@ -6,7 +6,7 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>Aprende jugando</title>
+  <title>Aprende Jugando</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="/assets/css/app.min.css">
   <!-- Template CSS -->
@@ -37,7 +37,7 @@
             </div>
             <div class="card card-primary">
               <div class="card-header">
-                <h4>Registre el pago</h4>
+                <h4>Registre el pago de lanzamiento (S/. 25.00)</h4>
               </div>
               <div class="card-body">
                 <form method="POST">
@@ -48,13 +48,22 @@
                           <i class="fas fa-envelope"></i>
                         </div>
                       </div>
-                      <input id="email" type="email" class="form-control" readonly value="aprede_jugando@gmail.com" name="email" autofocus placeholder="Email">
+                      <input id="email" type="email" class="form-control" readonly value="aprende_jugando@gmail.com" name="email" autofocus placeholder="Email">
+                      <div class="chocolat-parent pt-4">
+                        <a href="/assets/img/image-gallery/yape.png" class="chocolat-image" title="Just an example">
+                          <div data-crop-image="285">
+                            <img alt="image" src="/assets/img/image-gallery/yape.png" class="img-fluid">
+                          </div>
+                        </a>
+                      </div>
                     </div>
                   </div>
                   <div class="form-group text-center">
-                    <a href="mailto:aprede_jugando@gmail.com?Subject=Vengo%20a%20pagar%20membresia" type="submit" class="btn btn-lg btn-round btn-primary">
-                      Subscribe
+                    <a href="mailto:aprende_jugando@gmail.com?Subject=Vengo%20a%20pagar%20membresia" type="submit" class="btn btn-lg btn-round btn-primary">
+                      Enviar al correo
                     </a>
+                    </div>
+                    </div>
                   </div>
                 </form>
               </div>

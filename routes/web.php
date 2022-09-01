@@ -20,9 +20,9 @@ use Illuminate\Http\Request;
 Auth::routes();
 
 Route::get('/',[HomeController::class,'index'])->middleware(['auth', 'verified']);;
-Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware(['auth', 'verified']);;
-Route::get('/listarUsuarios', [HomeController::class, 'listarUsuarios'])->name('listarUsuarios')->middleware(['auth', 'verified']);;
-Route::get('/registrarUser/{id}', [HomeController::class, 'registrarUser'])->name('registrarUser')->middleware(['auth', 'verified']);;
+Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware(['auth', 'verified']);
+Route::get('/listarUsuarios', [HomeController::class, 'listarUsuarios'])->name('listarUsuarios')->middleware(['auth', 'verified']);
+Route::get('/registrarUser/{id}', [HomeController::class, 'registrarUser'])->name('registrarUser')->middleware(['auth', 'verified']);
 
 //Verificar y redirigir a verify
 Route::get('/email/verify', function () {
