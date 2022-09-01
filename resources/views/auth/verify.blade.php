@@ -21,6 +21,14 @@
   <div class="loader"></div>
   <div id="app">
     <section class="section">
+    <div class="m-3" align="right">
+        <button onclick="event.preventDefault();
+        document.getElementById('logout-form').submit();" class="btn btn-custom btn-outline-info btn-md"
+        style="border-radius: 5px;">Salir</button>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+            @csrf
+        </form>
+    </div>
       <div class="container mt-5">
         <div class="row">
           <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-6 offset-xl-3">
@@ -40,13 +48,13 @@
                           <i class="fas fa-envelope"></i>
                         </div>
                       </div>
-                      <input id="email" type="email" class="form-control" readonly value="admin@admin.com" name="email" autofocus placeholder="Email">
+                      <input id="email" type="email" class="form-control" readonly value="aprede_jugando@gmail.com" name="email" autofocus placeholder="Email">
                     </div>
                   </div>
                   <div class="form-group text-center">
-                    <button type="submit" class="btn btn-lg btn-round btn-primary">
+                    <a href="mailto:aprede_jugando@gmail.com?Subject=Vengo%20a%20pagar%20membresia" type="submit" class="btn btn-lg btn-round btn-primary">
                       Subscribe
-                    </button>
+                    </a>
                   </div>
                 </form>
               </div>
