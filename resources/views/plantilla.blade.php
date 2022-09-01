@@ -60,6 +60,11 @@
                                     <button onclick="toJuego()" class="btn btn-custom btn-outline-info btn-md"
                                         style="border-radius: 5px;">A jugar</button>
                                 </li>
+                                @if (auth()->user()->email == 'admin@admin.com')
+                                    <li class="nav-item pr-3">
+                                    <button onclick="window.location.pathname = '/dashboard'" class="btn btn-custom btn-outline-info btn-md"
+                                        style="border-radius: 5px;">Dashboard</button></li>
+                                @endif
                                 <li class="nav-item">
                                     <button onclick="event.preventDefault();
                                     document.getElementById('logout-form').submit();" class="btn btn-custom btn-outline-info btn-md"

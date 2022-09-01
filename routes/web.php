@@ -19,7 +19,21 @@ Auth::routes();
 
 Route::get('/',[HomeController::class,'index']);
 Route::get('/home', [HomeController::class, 'index'])->name('home');
-Route::get('/plantilla', function () {return view('plantilla');});
+Route::get('/listarUsuarios', [HomeController::class, 'listarUsuarios'])->name('listarUsuarios');
+Route::get('/plantilla', function () {
+    if (Auth::user()) {
+        return view('plantilla');
+    }else {
+        return view('login');
+    }
+    });
+Route::get('/dashboard', function () {
+    if (Auth::user()) {
+        return view('home');
+    }else {
+        return view('login');
+    }
+});
 
 Route::resource('caracter','CaracterController');
 Route::resource('coordenada','CoordenadaController');
